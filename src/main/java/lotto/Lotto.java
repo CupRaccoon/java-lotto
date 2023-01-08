@@ -10,47 +10,34 @@ import java.util.stream.Stream;
 public class Lotto {
 
 
-    private final List<Integer> numbers;
+    private final List<LottoNumber> numbers;
 
-    public Lotto(List<Integer> numbers) throws IllegalArgumentException {
+    public Lotto(List<LottoNumber> numbers) {
         validateNumbers(numbers);
         this.numbers = numbers;
     }
 
-    private void validateNumbers(List<Integer> numbers) throws IllegalArgumentException {
+    private void validateNumbers(List<LottoNumber> numbers){
         if (numbers.size() != 6) {
             throw new IllegalArgumentException("로또 번호는 6개이여야 합니다.");
-        }
-        for (int number : numbers) {
-            validateNumberRange(number);
         }
         validateDuplication(numbers);
     }
 
-    protected void validateNumberRange(int number) {
-        if (number < 1 || number > 45) {
-            throw new IllegalArgumentException("로또 번호는 1부터 45 사이의 숫자여야 합니다.");
-        }
-    }
-
-    private void validateDuplication(List<Integer> numbers) {
+    private void validateDuplication(List<LottoNumber> numbers) {
         if (new HashSet<>(numbers).size() != 6) {
             throw new IllegalArgumentException("로또 번호는 모두 달라야 합니다.");
         }
     }
 
-    public MatchPair calculateMatchNumber(WinningLotto winningLotto) {
-        int matchNumbers = winningLotto.calculateSameNumber(numbers);
-        boolean matchBonusNumber = false;
-        for(Integer number : this.numbers){
-            if(winningLotto.isMatchBonusNumber(number)){
-                matchBonusNumber = true;
-                break;
-            }
-        }
-        return new MatchPair(matchNumbers, matchBonusNumber);
+    public int calculateSameNumber(Lotto lotto){
+        long sameNumber = this.numbers.stream().filter(lotto::contains).count();
+        return (int) sameNumber;
     }
 
+    public boolean contains(LottoNumber lottoNumber){
+        return this.numbers.contains(lottoNumber);
+    }
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

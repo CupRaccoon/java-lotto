@@ -9,8 +9,8 @@ public class Application {
             int buyinglottoNumber = IOController.readBuyingMoney();
             lottoService.makeRandomLottos(buyinglottoNumber);
             IOController.printLottos(lottoService.makeLottosString());
-            List<Integer> winningNumbers = IOController.readWinningNumbers();
-            int bonusNumber = IOController.readBonusNumber();
+            Lotto winningNumbers = IOController.readWinningNumbers();
+            LottoNumber bonusNumber = IOController.readBonusNumber();
             WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
             lottoService.setWinningLotto(winningLotto);
             List<Integer> allRankings = lottoService.caculateAllRankings();

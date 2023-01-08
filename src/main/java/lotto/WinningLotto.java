@@ -7,59 +7,33 @@ import java.util.stream.Stream;
 
 public class WinningLotto {
 
-    private final List<Integer> numbers;
-    private final int bonusNumber;
+    private final Lotto lotto;
+    private final LottoNumber bonusNumber;
 
-    public WinningLotto(List<Integer> numbers, int bonusNumber) throws IllegalArgumentException {
-        validateNumbers(numbers);
-        this.numbers = numbers;
+    public WinningLotto(Lotto lotto, LottoNumber bonusNumber){
+        this.lotto = lotto;
         validateBonusNumber(bonusNumber);
         this.bonusNumber = bonusNumber;
     }
-    public Stream<Integer> toStream(){
-        return this.numbers.stream();
-    }
 
-    public int calculateSameNumber(List<Integer> lottoNumbers){
-        int sameNumber = (int) this.numbers.stream()
-                .filter(lotto -> lottoNumbers.stream().anyMatch(Predicate.isEqual(lotto))).count();
-
-        return sameNumber;
-    }
-    public boolean isMatchBonusNumber(int comparedMumber){
-        return comparedMumber == this.bonusNumber;
-    }
-
-    private void validateNumbers(List<Integer> numbers) throws IllegalArgumentException {
-        if (numbers.size() != 6) {
-            throw new IllegalArgumentException("로또 번호는 6개이여야 합니다.");
+    public int calculateRank(Lotto lotto){
+        int sameNumber = this.lotto.calculateSameNumber(lotto);
+        boolean matchBonusNumber = lotto.contains(bonusNumber);
+        if (sameNumber == 6) {
+            return 1;
         }
-        for (int number : numbers) {
-            validateNumberRange(number);
+        if (sameNumber == 5 && matchBonusNumber) {
+            return 2;
         }
-        validateDuplication(numbers);
+        if (sameNumber <= 5 && sameNumber >= 3) {
+            return (8 - sameNumber);
+        }
+        return 0;
     }
 
-    protected void validateNumberRange(int number) {
-        if (number < 1 || number > 45) {
-            throw new IllegalArgumentException("로또 번호는 1부터 45 사이의 숫자여야 합니다.");
-        }
-    }
-
-    private void validateDuplication(List<Integer> numbers) {
-        if (new HashSet<>(numbers).size() != 6) {
-            throw new IllegalArgumentException("로또 번호는 모두 달라야 합니다.");
-        }
-    }
-
-    private void validateBonusNumber(int bonusNumber) throws IllegalArgumentException {
-        validateNumberRange(bonusNumber);
-        List<Integer> numbers = this.numbers;
-        if (numbers.contains(bonusNumber)) {
+    private void validateBonusNumber(LottoNumber bonusNumber){
+        if (lotto.contains(bonusNumber)) {
             throw new IllegalArgumentException("로또 번호와 보너스 번호는 모두 달라야 합니다.");
         }
     }
-
-
-
 }

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class IOController {
 
-    public static int readBuyingMoney() throws IllegalArgumentException {
+    public static int readBuyingMoney() {
         System.out.println("구입금액을 입력해 주세요.");
         String input = Console.readLine();
         int buyingMoney;
@@ -25,7 +25,7 @@ public class IOController {
         return buyingMoney / 1000;
     }
 
-    public static List<Integer> readWinningNumbers() throws IllegalArgumentException {
+    public static Lotto readWinningNumbers(){
         System.out.println("당첨 번호를 입력해 주세요.");
         String input = Console.readLine();
         String pattern = "^([1-9]?[0-9],){5}[1-9]?[0-9]$";
@@ -33,24 +33,23 @@ public class IOController {
             throw new IllegalArgumentException("쉼표로 구분된 6개의 숫자를 입력해야 합니다.");
         }
         String[] splitedInputs = input.split(",");
-        List<Integer> lottoNumbers = new ArrayList<>();
+        List<LottoNumber> lottoNumbers = new ArrayList<>();
         for (String splitedInput : splitedInputs) {
-            int lottoNumber = Integer.parseInt(splitedInput);
-            validateNumberRange(lottoNumber);
-            lottoNumbers.add(lottoNumber);
+            int inputNumber = Integer.parseInt(splitedInput);
+            lottoNumbers.add(new LottoNumber(inputNumber));
         }
-        return lottoNumbers;
+        return new Lotto(lottoNumbers);
     }
 
-    public static int readBonusNumber() throws IllegalArgumentException {
+    public static LottoNumber readBonusNumber(){
         System.out.println("보너스 번호를 입력해 주세요.");
         String input = Console.readLine();
         String pattern = "^[1-9]?[0-9]$";
         if (!Pattern.matches(pattern, input)) {
             throw new IllegalArgumentException("최대 두자리 숫자를 입력해야 합니다.");
         }
-        validateNumberRange(Integer.parseInt(input));
-        return Integer.parseInt(input);
+        int inputNumber = Integer.parseInt(input);
+        return new LottoNumber(inputNumber);
     }
 
     public static void printLottos(List<String> lottos) {
@@ -78,9 +77,4 @@ public class IOController {
     }
 
 
-    private static void validateNumberRange(int number) {
-        if (number < 1 || number > 45) {
-            throw new IllegalArgumentException("로또 번호는 1부터 45 사이의 숫자여야 합니다.");
-        }
-    }
 }

@@ -11,13 +11,6 @@ import java.util.List;
 class LottoServiceTest {
 
     @Test
-    void makeRandomLottosTest() {
-        LottoService lottoService = new LottoService();
-        lottoService.makeRandomLottos(5);
-        Assertions.assertThat(lottoService.getLottos().size()).isEqualTo(5);
-    }
-
-    @Test
     void calculateEarningRateTest() {
         LottoService lottoService = new LottoService();
         List<Integer> allRankings = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5));

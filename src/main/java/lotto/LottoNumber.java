@@ -23,6 +23,11 @@ public class LottoNumber {
     }
 
     @Override
+    public int hashCode() {
+        return Integer.hashCode(Number);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if(o instanceof LottoNumber) {
             LottoNumber compared = (LottoNumber) o;

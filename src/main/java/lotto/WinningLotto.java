@@ -1,9 +1,5 @@
 package lotto;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class WinningLotto {
 
@@ -16,19 +12,25 @@ public class WinningLotto {
         this.bonusNumber = bonusNumber;
     }
 
-    public int calculateRank(Lotto lotto){
-        int sameNumber = this.lotto.calculateSameNumber(lotto);
+    public int matchRank(Lotto lotto){
+        int sameNumber = this.lotto.hitCount(lotto);
         boolean matchBonusNumber = lotto.contains(bonusNumber);
         if (sameNumber == 6) {
-            return 1;
+            return Rank.FIRST.getValue();
         }
         if (sameNumber == 5 && matchBonusNumber) {
-            return 2;
+            return Rank.SECOND.getValue();
         }
-        if (sameNumber <= 5 && sameNumber >= 3) {
-            return (8 - sameNumber);
+        if (sameNumber == 5){
+            return Rank.THIRD.getValue();
         }
-        return 0;
+        if(sameNumber == 4){
+            return Rank.FOURTH.getValue();
+        }
+        if(sameNumber == 3){
+            return Rank.FIFTH.getValue();
+        }
+        return Rank.MISS.getValue();
     }
 
     private void validateBonusNumber(LottoNumber bonusNumber){

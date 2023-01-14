@@ -1,22 +1,9 @@
 package lotto;
 
-import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
-        try {
-            LottoService lottoService = new LottoService();
-            int buyinglottoNumber = IOController.readBuyingMoney();
-            lottoService.makeRandomLottos(buyinglottoNumber);
-            IOController.printLottos(lottoService.makeLottosString());
-            Lotto winningNumbers = IOController.readWinningNumbers();
-            LottoNumber bonusNumber = IOController.readBonusNumber();
-            WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
-            lottoService.setWinningLotto(winningLotto);
-            List<Integer> allRankings = lottoService.caculateAllRankings();
-            IOController.printPrizeResult(allRankings, buyinglottoNumber);
-        } catch (IllegalArgumentException e) {
-            IOController.printExceptionMessage(e);
-        }
+        LottoGame lottoGame = new LottoGame();
+        lottoGame.run();
     }
 }

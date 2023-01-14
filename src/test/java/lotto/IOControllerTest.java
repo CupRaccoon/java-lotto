@@ -26,7 +26,7 @@ class IOControllerTest {
 
         in = new ByteArrayInputStream("14000".getBytes());
         System.setIn(in);
-        Assertions.assertThat(IOController.readBuyingMoney()).isEqualTo(14);
+        Assertions.assertThat(IOController.readBuyingMoney()).isEqualTo(14000);
     }
 
     @Test
@@ -38,7 +38,7 @@ class IOControllerTest {
             lottonumbers.add(new LottoNumber(i));
         }
         Lotto lotto = new Lotto(lottonumbers);
-        Assertions.assertThat(IOController.readWinningNumbers().calculateSameNumber(lotto)).isEqualTo(6);
+        Assertions.assertThat(IOController.readWinningNumbers().hitCount(lotto)).isEqualTo(6);
 
         in = new ByteArrayInputStream("1,2,3,4,5".getBytes());
         System.setIn(in);

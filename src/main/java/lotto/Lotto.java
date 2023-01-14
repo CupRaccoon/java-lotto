@@ -1,11 +1,7 @@
 package lotto;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class Lotto {
 
@@ -31,7 +27,7 @@ public class Lotto {
         }
     }
 
-    public int calculateSameNumber(Lotto lotto){
+    public int hitCount(Lotto lotto){
         long sameNumber = this.numbers.stream().filter(lotto::contains).count();
         return (int) sameNumber;
     }
@@ -39,8 +35,8 @@ public class Lotto {
     public boolean contains(LottoNumber lottoNumber){
         return this.numbers.contains(lottoNumber);
     }
-    @Override
-    public String toString() {
+
+    public String show() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
         for (int index = 0; index < this.numbers.size() - 1; index++) {

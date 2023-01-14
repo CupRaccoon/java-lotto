@@ -16,13 +16,13 @@ public class IOController {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("로또 구입 금액은 숫자입니다.");
         }
-        if(buyingMoney < 0 || buyingMoney > MoneyConstant.MAX_LOTTO_PRIC.getValue()){
+        if(buyingMoney < 0 || buyingMoney > LottoGame.MAX_MONEY){
             throw new IllegalArgumentException("로또 구입 금액은 0원이상 2,000,000,000원 이하입니다.");
         }
-        if (buyingMoney % 1000 != 0) {
+        if (buyingMoney % LottoGame.LOTTO_PRICE != 0) {
             throw new IllegalArgumentException("로또 구입 금액은 1000원 단위입니다.");
         }
-        return buyingMoney / 1000;
+        return buyingMoney;
     }
 
     public static Lotto readWinningNumbers(){
@@ -52,14 +52,14 @@ public class IOController {
         return new LottoNumber(inputNumber);
     }
 
-    public static void printLottos(List<String> lottos) {
+    public static void printLottos(List<Lotto> lottos) {
         System.out.println(lottos.size() + "개를 구매했습니다.");
-        for (String lotto : lottos) {
-            System.out.println(lotto);
+        for (Lotto lotto : lottos) {
+            System.out.println(lotto.show());
         }
     }
 
-    public static void printPrizeResult(List<Integer> allRankings, Integer buyingLottoNumber) {
+    public static void printPrizeResult(List<Integer> allRankings, Float earningRate) {
         System.out.println("당첨 통계");
         System.out.println("---");
         System.out.println("3개 일치 (5,000원) - " + allRankings.get(5) + "개");
@@ -67,8 +67,7 @@ public class IOController {
         System.out.println("5개 일치 (1,500,000원) - " + allRankings.get(3) + "개");
         System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + allRankings.get(2) + "개");
         System.out.println("6개 일치 (2,000,000,000원) - " + allRankings.get(1) + "개");
-        LottoService lottoService = new LottoService();
-        Float earningRate = lottoService.calculateEarningRate(allRankings, buyingLottoNumber);
+
         System.out.println("총 수익률은 " + String.format("%.1f", earningRate) + "%입니다.");
     }
 

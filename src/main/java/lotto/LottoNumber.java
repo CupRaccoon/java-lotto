@@ -3,12 +3,12 @@ package lotto;
 import java.util.Objects;
 
 public class LottoNumber {
-    private final Integer Number;
+    private final Integer number;
 
 
     public LottoNumber(int number) {
         validateNumberRange(number);
-        this.Number = number;
+        this.number = number;
     }
 
     protected void validateNumberRange(int number) {
@@ -19,19 +19,19 @@ public class LottoNumber {
 
     @Override
     public String toString() {
-        return Integer.toString(this.Number);
+        return Integer.toString(this.number);
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(Number);
+        return Integer.hashCode(number);
     }
 
     @Override
     public boolean equals(Object o) {
         if(o instanceof LottoNumber) {
             LottoNumber compared = (LottoNumber) o;
-            return this.Number.equals(compared.Number);
+            return this.number.equals(compared.number);
         }
         else{
             return false;

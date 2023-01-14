@@ -36,7 +36,7 @@ class LottoTest {
                 .map(LottoNumber::new).collect(Collectors.toList()));
         Lotto lotto2 = new Lotto(List.of(4, 5, 6, 7, 8, 9).stream()
                 .map(LottoNumber::new).collect(Collectors.toList()));
-        Assertions.assertThat(lotto1.calculateSameNumber(lotto2)).isEqualTo(3);
+        Assertions.assertThat(lotto1.hitCount(lotto2)).isEqualTo(3);
 
     }
 

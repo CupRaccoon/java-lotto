@@ -26,10 +26,10 @@ class WinningLottoTest {
         Lotto rankZeroLotto = new Lotto(List.of(1, 2, 10, 11, 12, 13).stream()
                 .map(LottoNumber::new).collect(Collectors.toList()));
 
-        assertThat(winningLotto.calculateRank(rankOneLotto)).isEqualTo(1);
-        assertThat(winningLotto.calculateRank(rankTwoLotto)).isEqualTo(2);
-        assertThat(winningLotto.calculateRank(rankThreeLotto)).isEqualTo(3);
-        assertThat(winningLotto.calculateRank(rankZeroLotto)).isEqualTo(0);
+        assertThat(winningLotto.matchRank(rankOneLotto)).isEqualTo(1);
+        assertThat(winningLotto.matchRank(rankTwoLotto)).isEqualTo(2);
+        assertThat(winningLotto.matchRank(rankThreeLotto)).isEqualTo(3);
+        assertThat(winningLotto.matchRank(rankZeroLotto)).isEqualTo(0);
 
 
     }

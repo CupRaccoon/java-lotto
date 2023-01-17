@@ -8,15 +8,9 @@ public enum Rank {
     FIFTH(5,5_000),
     MISS(0,0);
 
-    private final int value;
     private final int prize;
     Rank(int value, int prize){
-        this.value = value;
         this.prize = prize;
-    }
-
-    public int getValue(){
-        return value;
     }
 
     public int getPrize() {

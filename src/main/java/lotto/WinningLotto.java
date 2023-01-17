@@ -12,25 +12,25 @@ public class WinningLotto {
         this.bonusNumber = bonusNumber;
     }
 
-    public int matchRank(Lotto lotto){
+    public Rank matchRank(Lotto lotto){
         int sameNumber = this.lotto.hitCount(lotto);
         boolean matchBonusNumber = lotto.contains(bonusNumber);
         if (sameNumber == 6) {
-            return Rank.FIRST.getValue();
+            return Rank.FIRST;
         }
         if (sameNumber == 5 && matchBonusNumber) {
-            return Rank.SECOND.getValue();
+            return Rank.SECOND;
         }
         if (sameNumber == 5){
-            return Rank.THIRD.getValue();
+            return Rank.THIRD;
         }
         if(sameNumber == 4){
-            return Rank.FOURTH.getValue();
+            return Rank.FOURTH;
         }
         if(sameNumber == 3){
-            return Rank.FIFTH.getValue();
+            return Rank.FIFTH;
         }
-        return Rank.MISS.getValue();
+        return Rank.MISS;
     }
 
     private void validateBonusNumber(LottoNumber bonusNumber){

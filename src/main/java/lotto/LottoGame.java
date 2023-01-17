@@ -1,8 +1,9 @@
 package lotto;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import camp.nextstep.edu.missionutils.Randoms;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LottoGame {
     public static final int LOTTO_PRICE = 1000;
@@ -11,39 +12,58 @@ public class LottoGame {
 
     public void run(){
         try {
-            LottoMaker lottoMaker = new LottoMaker();
+            List<Lotto> lottos = this.buyLottos();
 
-            int buyingMoney = IOController.readBuyingMoney();
-            List<Lotto> lottos = lottoMaker.buyLottos(buyingMoney);
-            IOController.printLottos(lottos);
+            WinningLotto winningLotto = this.readWinningLottos();
 
-            Lotto winningNumbers = IOController.readWinningNumbers();
-            LottoNumber bonusNumber = IOController.readBonusNumber();
-            WinningLotto winningLotto = lottoMaker.readWinningLottos(winningNumbers, bonusNumber);
-
-            this.showEarningRate(lottos,winningLotto,buyingMoney);
+            this.showEarningRate(lottos,winningLotto);
         }
         catch(IllegalArgumentException e){
             IOController.printExceptionMessage(e);
         }
     }
 
-    private void showEarningRate(List<Lotto> lottos, WinningLotto winningLotto, int buyingMoney) {
-        Integer[] allRankings = {0, 0, 0, 0, 0, 0};
+    List<Lotto> buyLottos(){
+        int buyingMoney = IOController.readBuyingMoney();
+        int numberOfLottos = buyingMoney/LottoGame.LOTTO_PRICE;
+
+        List<Lotto> lottos = new ArrayList<>();
+        for (int i = 0; i < numberOfLottos; i++) {
+            List<LottoNumber> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6)
+                    .stream().map(LottoNumber::new).collect(Collectors.toList());
+            Lotto lotto = new Lotto(numbers);
+            lottos.add(lotto);
+        }
+        IOController.printLottos(lottos);
+        return lottos;
+    }
+
+    WinningLotto readWinningLottos(){
+        Lotto winningNumbers = IOController.readWinningNumbers();
+        LottoNumber bonusNumber = IOController.readBonusNumber();
+        return new WinningLotto(winningNumbers,bonusNumber);
+
+    }
+    private void showEarningRate(List<Lotto> lottos, WinningLotto winningLotto) {
+        final Map<Rank, Integer> allRankings = Arrays.stream(Rank.values())
+                .collect(Collectors.toMap(key -> key, value -> 0));
+        
+        
         for (Lotto lotto : lottos) {
-            int ranking = winningLotto.matchRank(lotto);
-            allRankings[ranking]++;
+            final Rank rank = winningLotto.matchRank(lotto);
+            allRankings.merge(rank,1,Integer::sum);
         }
 
         float totalPrize = 0f;
-        totalPrize += allRankings[Rank.FIRST.getValue()] * Rank.FIRST.getPrize();
-        totalPrize += allRankings[Rank.SECOND.getValue()] * Rank.SECOND.getPrize();
-        totalPrize += allRankings[Rank.THIRD.getValue()] * Rank.THIRD.getPrize();
-        totalPrize += allRankings[Rank.FOURTH.getValue()] * Rank.FOURTH.getPrize();
-        totalPrize += allRankings[Rank.FIFTH.getValue()] * Rank.FIFTH.getPrize();
-        totalPrize += allRankings[Rank.MISS.getValue()] * Rank.MISS.getPrize();
+        totalPrize += allRankings.get(Rank.FIRST) * Rank.FIRST.getPrize();
+        totalPrize += allRankings.get(Rank.SECOND) * Rank.SECOND.getPrize();
+        totalPrize += allRankings.get(Rank.THIRD) * Rank.THIRD.getPrize();
+        totalPrize += allRankings.get(Rank.FOURTH) * Rank.FOURTH.getPrize();
+        totalPrize += allRankings.get(Rank.FIFTH) * Rank.FIFTH.getPrize();
+        totalPrize += allRankings.get(Rank.MISS) * Rank.MISS.getPrize();
+        int buyingMoney = lottos.size() * LOTTO_PRICE;
         float earningRate = totalPrize / buyingMoney * 100;
 
-        IOController.printPrizeResult(new ArrayList<>(Arrays.asList(allRankings)),earningRate);
+        IOController.printPrizeResult(allRankings,earningRate);
     }
 }

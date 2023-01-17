@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.Console;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class IOController {
@@ -59,14 +60,14 @@ public class IOController {
         }
     }
 
-    public static void printPrizeResult(List<Integer> allRankings, Float earningRate) {
+    public static void printPrizeResult(Map<Rank,Integer> allRankings, Float earningRate) {
         System.out.println("당첨 통계");
         System.out.println("---");
-        System.out.println("3개 일치 (5,000원) - " + allRankings.get(5) + "개");
-        System.out.println("4개 일치 (50,000원) - " + allRankings.get(4) + "개");
-        System.out.println("5개 일치 (1,500,000원) - " + allRankings.get(3) + "개");
-        System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + allRankings.get(2) + "개");
-        System.out.println("6개 일치 (2,000,000,000원) - " + allRankings.get(1) + "개");
+        System.out.println("3개 일치 (5,000원) - " + allRankings.get(Rank.FIFTH) + "개");
+        System.out.println("4개 일치 (50,000원) - " + allRankings.get(Rank.FOURTH) + "개");
+        System.out.println("5개 일치 (1,500,000원) - " + allRankings.get(Rank.THIRD) + "개");
+        System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + allRankings.get(Rank.SECOND) + "개");
+        System.out.println("6개 일치 (2,000,000,000원) - " + allRankings.get(Rank.FIRST) + "개");
 
         System.out.println("총 수익률은 " + String.format("%.1f", earningRate) + "%입니다.");
     }
